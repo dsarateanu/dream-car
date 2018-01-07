@@ -27,15 +27,15 @@ public class UserServiceDefault implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         user.setRole("ADMIN");
-        user.setCompany( companyService.findCompanyByEmail( "dream.car@dreamcar.com" ) );
+        user.setCompany(companyService.findCompanyByEmail("dream.car@dreamcar.com"));
         return userRepository.save(user);
     }
 
     @Override
     public User saveUser(User user) {
-        Company companyExists = companyService.findCompanyByEmail( user.getCompany().getEmail() );
-        if ( companyExists != null ) {
-            user.setCompany( companyExists );
+        Company companyExists = companyService.findCompanyByEmail(user.getCompany().getEmail());
+        if (companyExists == null) {
+            companyService.saveCompany(user.getCompany());
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(0);

@@ -21,12 +21,17 @@ public class Offer {
     @NotEmpty(message = "*Please provide your price per product")
     private Double pricePerProduct;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Offer() {
     }
 
-    public Offer(Auction auction, Double pricePerProduct) {
+    public Offer(Auction auction, Double pricePerProduct, User user) {
         this.auction = auction;
         this.pricePerProduct = pricePerProduct;
+        this.user = user;
     }
 
     public Long getId() {
@@ -52,4 +57,6 @@ public class Offer {
     public void setPricePerProduct(Double pricePerProduct) {
         this.pricePerProduct = pricePerProduct;
     }
+
+
 }

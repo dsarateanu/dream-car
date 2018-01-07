@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Auction</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div th:fragment="list-auction">
+    <h1 style="text-align: left; margin-left: 10px;">Available Auctions</h1>
+
+    <div style="text-align: right;margin-bottom: 5px; margin-right: 10px">
+        <a role="button" class="btn btn-primary" type="button" sec:authorize="hasAuthority('ADMIN')"
+           th:href="@{/auction/}">Add Auction
+        </a>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Nr.</th>
+            <th>Target Price</th>
+            <th>Currency</th>
+            <th>Expiration Date</th>
+            <th>Status</th>
+            <th>Product Name</th>
+        </tr>
+        <tr th:each="auction: ${auctions}">
+            <td th:text="${auctionStat.index+1}+'.'">Desc</td>
+            <td th:text="${auction.targetPrice}">Desc</td>
+            <td th:text="${auction.currency}">Desc</td>
+            <td th:text="${auction.expirationDate}">Desc</td>
+            <td th:text="${auction.status}">Desc</td>
+            <td th:text="${auction.product.name}">Desc</td>
+            <td>
+                <a class="btn btn-info" role="button"
+                   th:href="@{/auction/{id}(id=${auction.id})}">Details
+                </a>
+                <form sec:authorize="hasAuthority('ADMIN')" th:action="@{/auction/{id}/delete(id=${auction.id})}" method="post" style="display: inline">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div th:fragment="add-auction">
+    <h1 th:if="${isEdit}">Bookmark Edit Form</h1>
+    <h1 th:unless="${isEdit}">Bookmark Add Form</h1>
+
+    <form th:action="@{/bookmark/{id}(id=${isEdit}?${bookmark.uuid}:'')}" method="post" th:object="${bookmark}">
+        <fieldset>
+            <legend>Bookmark</legend>
+            <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
+                <label for="description">
+                    Description
+                </label>
+                <input type="text" class="form-control" th:field="*{description}"/>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('description')}"
+                      th:errors="*{description}"
+                >hdsjfhkjs</span>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('url')}?'has-error'">
+                <label for="url">
+                    Url
+                </label>
+                <input type="url" class="form-control" th:field="*{url}"/>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('url')}"
+                      th:errors="*{url}"
+                >hdsjfhkjs</span>
+            </div>
+            <th:block th:if="${isEdit}">
+                <input th:field="*{version}" type="hidden"/>
+                <input th:field="*{createdOn}" type="hidden"/>
+                <input th:field="*{updatedOn}" type="hidden"/>
+                <div style="text-align:right">
+                    <div style="display:inline">
+                        <span style="font-weight: bold">Created on:</span> <span
+                            th:text="${#temporals.format(bookmark.createdOn)}">now</span>
+                    </div>
+                    <div style="display:inline">
+                        <span style="font-weight: bold">Last update on:</span> <span
+                            th:text="${#temporals.format(bookmark.updatedOn)}">now</span>
+                    </div>
+                </div>
+            </th:block>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-secondary" type="reset">Reset</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<div th:fragment="details-auction">
+    <h1>Auction Details</h1>
+    <fieldset>
+
+        <label th:text="${auction.description}">Bookmark</label>
+        <div>
+            <a href="example.com" th:href="${bookmark.url}" th:text="${bookmark.url}">Link</a>
+        </div>
+        <div>
+            Created on: <span th:text="${#temporals.format(bookmark.createdOn)}">now</span>
+        </div>
+        <div>
+            Last update on: <span th:text="${#temporals.format(bookmark.updatedOn)}">now</span>
+        </div>
+        <div style="text-align: left">
+            <a role="button" class="btn btn-primary" th:href="@{/}">Back to the List</a>
+            <th:block sec:authorize="hasRole('ADMIN')">
+                <a role="button" class="btn btn-success"
+                   th:href="@{/bookmark/{id}(id=${bookmark.uuid}, edit='true')}">Edit</a>
+                <form style="display: inline"
+                      th:action="@{/bookmark/{id}/delete(id=${bookmark.uuid})}" method="post">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </th:block>
+        </div>
+    </fieldset>
+</div>
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

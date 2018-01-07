@@ -1,12 +1,41 @@
 package com.home.dreamcar.service;
 
+import com.home.dreamcar.exception.ErrorAdvice;
+import com.home.dreamcar.model.Offer;
 import com.home.dreamcar.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OfferServiceDefault {
+public class OfferServiceDefault implements OfferService {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    public Offer saveOrUpdateOffer(Offer offer) {
+        Offer offerFound = find(offer.getId());
+        if (offerFound == null) {
+            return offerRepository.save(offer);
+        } else {
+            throw new ErrorAdvice.NotModifiedDataAccessException("Product already exists");
+        }
+    }
+
+    public Offer find(Long id) {
+        return offerRepository.findById(id);
+    }
+
+    public Iterable<Offer> findAll() {
+        return offerRepository.findAll();
+    }
+
+    public void delete(Long id) {
+        Offer offer = find(id);
+        if (offer != null) {
+            offerRepository.delete(id);
+        } else {
+            throw new ErrorAdvice.NotModifiedDataAccessException("Product already gone");
+        }
+    }
+
 }

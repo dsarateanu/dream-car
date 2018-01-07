@@ -47,7 +47,7 @@ public class User {
     private Company company;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Auction> auctions;
+    private Set<Offer> offers;
 
     public User() {
     }
@@ -124,13 +124,5 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public Set<Auction> getAuctions() {
-        return auctions;
-    }
-
-    public void setAuctions(Set<Auction> auctions) {
-        this.auctions = auctions;
     }
 }

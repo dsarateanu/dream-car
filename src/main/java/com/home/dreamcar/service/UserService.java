@@ -3,8 +3,12 @@ package com.home.dreamcar.service;
 import com.home.dreamcar.model.User;
 
 public interface UserService {
-    public User findUserByEmail(String email);
-    public User saveUser(User user);
-    public User saveAdminUser(User user);
-    public User approveUser(User user);
+
+    User findUserByEmail(String email);
+
+    User saveUser(User user);
+
+    User saveAdminUser(User user);
+
+    User approveUser(User user);
 }

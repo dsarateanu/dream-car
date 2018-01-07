@@ -12,7 +12,7 @@ public class Auction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "auction_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "target_price")
@@ -21,7 +21,7 @@ public class Auction {
 
     @Column(name = "currency")
     @NotEmpty(message = "*Please provide currency")
-    private Currency currency;
+    private String currency;
 
     @Column(name = "expiration_date")
     @NotEmpty(message = "*Please provide expirationDate")
@@ -33,11 +33,7 @@ public class Auction {
 
     @Column(name = "status")
     @NotEmpty(message = "*Please provide status")
-    private AuctionStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -49,13 +45,12 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(Double targetPrice, Currency currency, Date expirationDate, Integer numberOfProducts, AuctionStatus status, User user, Product product) {
+    public Auction(Double targetPrice, String currency, Date expirationDate, Integer numberOfProducts, String status, Product product) {
         this.targetPrice = targetPrice;
         this.currency = currency;
         this.expirationDate = expirationDate;
         this.numberOfProducts = numberOfProducts;
         this.status = status;
-        this.user = user;
         this.product = product;
     }
 
@@ -75,11 +70,11 @@ public class Auction {
         this.targetPrice = targetPrice;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
@@ -99,20 +94,12 @@ public class Auction {
         this.numberOfProducts = numberOfProducts;
     }
 
-    public AuctionStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(AuctionStatus status) {
+    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Product getProduct() {

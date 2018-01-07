@@ -3,3 +3,9 @@
 	font-size: 22px;
 	color: #004080;
 }
+
+.column {
+	display: inline-block;
+	width: 33.1%;
+	white-space: normal;
+}
