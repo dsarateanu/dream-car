@@ -6,6 +6,11 @@
 
 .column {
 	display: inline-block;
-	width: 33.1%;
+	width: 24.77%;
 	white-space: normal;
+}
+
+.margin-tb {
+	margin-top: 20px;
+	margin-bottom: 20px;
 }

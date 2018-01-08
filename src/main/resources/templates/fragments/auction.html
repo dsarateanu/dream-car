@@ -10,14 +10,7 @@
 </head>
 <body>
 <div th:fragment="list-auction">
-    <h1 style="text-align: left; margin-left: 10px;">Available Auctions</h1>
-
-    <div style="text-align: right;margin-bottom: 5px; margin-right: 10px">
-        <a role="button" class="btn btn-primary" type="button" sec:authorize="hasAuthority('ADMIN')"
-           th:href="@{/auction/}">Add Auction
-        </a>
-    </div>
-
+    <h1 style="text-align: center;" class="margin-tb">Available Auctions</h1>
     <table class="table">
         <tr>
             <th>Nr.</th>
@@ -26,6 +19,7 @@
             <th>Expiration Date</th>
             <th>Status</th>
             <th>Product Name</th>
+            <th>Actions</th>
         </tr>
         <tr th:each="auction: ${auctions}">
             <td th:text="${auctionStat.index+1}+'.'">Desc</td>
@@ -35,9 +29,11 @@
             <td th:text="${auction.status}">Desc</td>
             <td th:text="${auction.product.name}">Desc</td>
             <td>
-                <a class="btn btn-info" role="button"
-                   th:href="@{/auction/{id}(id=${auction.id})}">Details
-                </a>
+                <form th:action="@{/offer}" method="get" style="display: inline">
+                    <button class="btn btn-primary" type="submit">Add Offer</button>
+                </form>
+                <a class="btn btn-info" role="button" th:href="@{/auction/{id}(id=${auction.id})}">Details</a>
+                <a role="button" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">Edit</a>
                 <form sec:authorize="hasAuthority('ADMIN')" th:action="@{/auction/{id}/delete(id=${auction.id})}" method="post" style="display: inline">
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
@@ -46,81 +42,83 @@
     </table>
 </div>
 
-<div th:fragment="add-auction">
-    <h1 th:if="${isEdit}">Bookmark Edit Form</h1>
-    <h1 th:unless="${isEdit}">Bookmark Add Form</h1>
+<!-- <div th:fragment="add-auction">
+    <h1 th:if="${isEdit}">Auction Edit Form</h1>
+    <h1 th:unless="${isEdit}">Auction Add Form</h1>
 
-    <form th:action="@{/bookmark/{id}(id=${isEdit}?${bookmark.uuid}:'')}" method="post" th:object="${bookmark}">
+    <form th:action="@{/auction/{id}(id=${isEdit}?${auction.id}:'')}" method="post" th:object="${auction}">
         <fieldset>
-            <legend>Bookmark</legend>
-            <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
-                <label for="description">
-                    Description
-                </label>
-                <input type="text" class="form-control" th:field="*{description}"/>
-                <span class="help-inline has-danger"
-                      th:if="${#fields.hasErrors('description')}"
-                      th:errors="*{description}"
-                >hdsjfhkjs</span>
+            <legend>Auction</legend>
+            <div class="form-group" th:classappend="${#fields.hasErrors('targetPrice')}?'has-error'">
+                <label>Target Price</label>
+                <input type="text" class="form-control" th:field="*{targetPrice}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('targetPrice')}" th:errors="*{targetPrice}">Target Price</span>
             </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('url')}?'has-error'">
-                <label for="url">
-                    Url
-                </label>
-                <input type="url" class="form-control" th:field="*{url}"/>
-                <span class="help-inline has-danger"
-                      th:if="${#fields.hasErrors('url')}"
-                      th:errors="*{url}"
-                >hdsjfhkjs</span>
+            <div class="form-group" th:classappend="${#fields.hasErrors('currency')}?'has-error'">
+                <label>Currency</label>
+                <input type="text" class="form-control" th:field="*{currency}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}">Currency</span>
             </div>
-            <th:block th:if="${isEdit}">
-                <input th:field="*{version}" type="hidden"/>
-                <input th:field="*{createdOn}" type="hidden"/>
-                <input th:field="*{updatedOn}" type="hidden"/>
-                <div style="text-align:right">
-                    <div style="display:inline">
-                        <span style="font-weight: bold">Created on:</span> <span
-                            th:text="${#temporals.format(bookmark.createdOn)}">now</span>
-                    </div>
-                    <div style="display:inline">
-                        <span style="font-weight: bold">Last update on:</span> <span
-                            th:text="${#temporals.format(bookmark.updatedOn)}">now</span>
-                    </div>
-                </div>
-            </th:block>
+            <div class="form-group" th:classappend="${#fields.hasErrors('expirationDate')}?'has-error'">
+                <label>Expiration Date</label>
+                <input type="text" class="form-control" th:field="*{expirationDate}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}">Expiration Date</span>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('status')}?'has-error'">
+                <label>Status</label>
+                <input type="text" class="form-control" th:field="*{status}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status</span>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('product.name')}?'has-error'">
+                <label>Product Name</label>
+                <input type="text" class="form-control" th:field="*{product.name}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('product.name')}" th:errors="*{product.name}">Product Name</span>
+            </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Save</button>
                 <button class="btn btn-secondary" type="reset">Reset</button>
             </div>
         </fieldset>
     </form>
-</div>
+</div> -->
 
 <div th:fragment="details-auction">
-    <h1>Auction Details</h1>
-    <fieldset>
-
-        <label th:text="${auction.description}">Bookmark</label>
-        <div>
-            <a href="example.com" th:href="${bookmark.url}" th:text="${bookmark.url}">Link</a>
+    <h1 style="text-align: center;" class="margin-tb">Auction Details</h1>
+    <fieldset style="text-align: center;">
+        <div style="width: 100%">
+            <label>TargetPrice</label>
+            <label th:text="${auctionDetails.targetPrice}">TargetPrice</label>
         </div>
-        <div>
-            Created on: <span th:text="${#temporals.format(bookmark.createdOn)}">now</span>
+        <div style="width: 100%">
+            <label>Currency</label>
+            <label th:text="${auctionDetails.currency}">Currency</label>
         </div>
-        <div>
-            Last update on: <span th:text="${#temporals.format(bookmark.updatedOn)}">now</span>
+        <div style="width: 100%">
+            <label>ExpirationDate</label>
+            <label th:text="${auctionDetails.expirationDate}">ExpirationDate</label>
         </div>
-        <div style="text-align: left">
-            <a role="button" class="btn btn-primary" th:href="@{/}">Back to the List</a>
-            <th:block sec:authorize="hasRole('ADMIN')">
-                <a role="button" class="btn btn-success"
-                   th:href="@{/bookmark/{id}(id=${bookmark.uuid}, edit='true')}">Edit</a>
-                <form style="display: inline"
-                      th:action="@{/bookmark/{id}/delete(id=${bookmark.uuid})}" method="post">
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                </form>
-            </th:block>
+        <div style="width: 100%">
+            <label>Status</label>
+            <label th:text="${auctionDetails.status}">Status</label>
         </div>
+        <div style="width: 100%">
+            <label>Product</label>
+            <label th:text="${auctionDetails.product.name}">Product</label>
+        </div>
+        <div style="width: 100%">
+            <label>Product details</label>
+            <label th:text="${auctionDetails.product.description}">Product</label>
+        </div>
+        <th:block style="text-align: center" class="margin-tb">
+            <a role="button" class="btn btn-primary" th:href="@{/home}">Back to the List</a>
+            <form style="display: inline" th:action="@{/offer}" method="get">
+                <button class="btn btn-info" type="submit">AddOffer</button>
+            </form>
+            <a sec:authorize="hasAuthority('ADMIN')" role="button" class="btn btn-success" th:href="@{/auction/{id}(id=${auctionDetails.id}, edit='true')}">Edit</a>
+            <form sec:authorize="hasAuthority('ADMIN')" style="display: inline" th:action="@{/auction/{id}/delete(id=${auctionDetails.id})}" method="post">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+        </th:block>
     </fieldset>
 </div>
 

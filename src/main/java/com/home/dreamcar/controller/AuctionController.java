@@ -23,10 +23,9 @@ public class AuctionController {
 
     @GetMapping("{id}")
     public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("auction", auctionService.find(id));
-        return "auction/details";
+        model.addAttribute("auctionDetails", auctionService.find(id));
+        return "/home";
     }
-
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "{id}", params = "edit=true")
