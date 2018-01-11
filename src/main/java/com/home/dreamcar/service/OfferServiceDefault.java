@@ -1,6 +1,7 @@
 package com.home.dreamcar.service;
 
 import com.home.dreamcar.exception.ErrorAdvice;
+import com.home.dreamcar.model.Auction;
 import com.home.dreamcar.model.Offer;
 import com.home.dreamcar.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,7 @@ public class OfferServiceDefault implements OfferService {
     private OfferRepository offerRepository;
 
     public Offer saveOrUpdateOffer(Offer offer) {
-        Offer offerFound = find(offer.getId());
-        if (offerFound == null) {
-            return offerRepository.save(offer);
-        } else {
-            throw new ErrorAdvice.NotModifiedDataAccessException("Product already exists");
-        }
+        return offerRepository.save(offer);
     }
 
     public Offer find(Long id) {
@@ -36,6 +32,11 @@ public class OfferServiceDefault implements OfferService {
         } else {
             throw new ErrorAdvice.NotModifiedDataAccessException("Product already gone");
         }
+    }
+
+    @Override
+    public Iterable<Offer> findByAuction(Auction auction) {
+        return offerRepository.findByAuction(auction);
     }
 
 }

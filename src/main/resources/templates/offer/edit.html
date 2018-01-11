@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Offer</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div margin-tb th:replace="home :: 'image'"></div>
+
+<div class="container margin-tb panel-group panel panel-primary" style="width: 90%;">
+    <h1 th:if="${isEdit}">Offer Edit Form</h1>
+    <h1 th:unless="${isEdit}">Offer Add Form</h1>
+
+    <form th:action="@{/offer/{id}(id=${isEdit}?${offer.id}:'',auctionid=${isEdit}?${offer.auction.id}:${auctionid})}" method="post" th:object="${offer}">
+        <fieldset>
+            <legend>Offer</legend>
+            <div class="form-group" th:classappend="${#fields.hasErrors('pricePerProduct')}?'has-error'">
+                <label for="pricePerProduct">
+                    Price Per Product
+                </label>
+                <input type="text" class="form-control" th:field="*{pricePerProduct}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('pricePerProduct')}" th:errors="*{pricePerProduct}"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-secondary" type="reset">Reset</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

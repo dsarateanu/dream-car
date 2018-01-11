@@ -1,5 +1,6 @@
 package com.home.dreamcar.repository;
 
+import com.home.dreamcar.model.Auction;
 import com.home.dreamcar.model.Offer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,6 @@ public interface OfferRepository extends CrudRepository<Offer, Long> {
     void delete(Long id);
 
     Offer findById(Long id);
+
+    Iterable<Offer> findByAuction(Auction auction);
 }

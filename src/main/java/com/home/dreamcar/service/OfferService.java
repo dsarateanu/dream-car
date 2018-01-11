@@ -1,5 +1,6 @@
 package com.home.dreamcar.service;
 
+import com.home.dreamcar.model.Auction;
 import com.home.dreamcar.model.Offer;
 
 public interface OfferService {
@@ -11,4 +12,6 @@ public interface OfferService {
     public Iterable<Offer> findAll();
 
     void delete(Long id);
+
+    Iterable<Offer> findByAuction(Auction auction);
 }

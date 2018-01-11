@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Offer</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div th:fragment="list-offer">
+    <h1>Offers</h1>
+    <div style="text-align: right;margin-bottom: 1em;">
+        <a role="button" class="btn btn-primary" type="button" th:href="@{/offer(auctionid=${auction.id})}">
+            Add Offer
+        </a>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Nr.</th>
+            <th>Price per product</th>
+            <th>Currency</th>
+            <th>Expiration Date</th>
+            <th>Status</th>
+            <th>Product Name</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="offer: ${offers}">
+            <td th:text="${offerStat.index+1}+'.'">Nr</td>
+            <td th:text="${offer.pricePerProduct}">Price</td>
+            <td th:text="${offer.user.name}">User name</td>
+            <td th:text="${offer.user.company.name}">Company</td>
+
+            <td>
+                <a class="btn btn-info" role="button" th:href="@{/offer/{id}(id=${offer.id})}">Details</a>
+                <a th:if="${offer.user.email == #authentication.name || #authorization.expression('hasAuthority(''ADMIN'')')}"
+                   role="button" class="btn btn-success"
+                   th:href="@{/offer/{id}(id=${offer.id}, edit='true')}">
+                    Edit
+                </a>
+                <form th:if="${offer.user.email == #authentication.name || #authorization.expression('hasAuthority(''ADMIN'')')}"
+                      th:action="@{/offer/{id}/delete(id=${offer.id})}"
+                      method="post" style="display: inline">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.home.dreamcar.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "offer")
@@ -18,8 +19,8 @@ public class Offer {
     private Auction auction;
 
     @Column(name = "price_per_product")
-    @NotEmpty(message = "*Please provide your price per product")
-    private Double pricePerProduct;
+    @NotNull(message = "*Please provide your price per product")
+    private Integer pricePerProduct;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -28,7 +29,7 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(Auction auction, Double pricePerProduct, User user) {
+    public Offer(Auction auction, Integer pricePerProduct, User user) {
         this.auction = auction;
         this.pricePerProduct = pricePerProduct;
         this.user = user;
@@ -50,13 +51,19 @@ public class Offer {
         this.auction = auction;
     }
 
-    public Double getPricePerProduct() {
+    public Integer getPricePerProduct() {
         return pricePerProduct;
     }
 
-    public void setPricePerProduct(Double pricePerProduct) {
+    public void setPricePerProduct(Integer pricePerProduct) {
         this.pricePerProduct = pricePerProduct;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

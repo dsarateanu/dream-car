@@ -81,7 +81,6 @@ public class LoginController {
 		User user = userService.findUserByEmail( auth.getName() );
 		modelAndView.addObject( "userName", "Welcome " + user.getName() + "(" + user.getEmail() + ")" );
 		modelAndView.addObject( "auctions", auctionService.findAll() );
-		modelAndView.addObject( "auctionDetails", null );
 		modelAndView.setViewName( "/home" );
 		return modelAndView;
 	}

@@ -2,17 +2,17 @@ package com.home.dreamcar.controller;
 
 import com.home.dreamcar.model.Auction;
 import com.home.dreamcar.service.AuctionService;
+import com.home.dreamcar.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @Controller
 @RequestMapping("/auction/")
@@ -20,11 +20,15 @@ public class AuctionController {
 
     @Autowired
     AuctionService auctionService;
+    @Autowired
+    OfferService offerService;
 
     @GetMapping("{id}")
     public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("auctionDetails", auctionService.find(id));
-        return "/home";
+        Auction auction = auctionService.find(id);
+        model.addAttribute("auction", auction);
+        model.addAttribute("offers", offerService.findByAuction(auction));
+        return "auction/details";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -32,7 +36,7 @@ public class AuctionController {
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("auction", auctionService.find(id));
         model.addAttribute("isEdit", true);
-        return "/home";
+        return "auction/edit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -40,7 +44,7 @@ public class AuctionController {
     public String addForm(Model model) {
         model.addAttribute("auction", new Auction());
         model.addAttribute("isEdit", false);
-        return "/home";
+        return "auction/edit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

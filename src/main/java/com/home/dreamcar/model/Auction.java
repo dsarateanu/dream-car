@@ -3,6 +3,7 @@ package com.home.dreamcar.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,8 +17,8 @@ public class Auction {
     private Long id;
 
     @Column(name = "target_price")
-    @NotEmpty(message = "*Please provide target price")
-    private Double targetPrice;
+    @NotNull(message = "*Please provide target price")
+    private Integer targetPrice;
 
     @Column(name = "currency")
     @NotEmpty(message = "*Please provide currency")
@@ -28,7 +29,7 @@ public class Auction {
     private Date expirationDate;
 
     @Column(name = "number_of_products")
-    @NotEmpty(message = "*Please provide number of products")
+    @NotNull(message = "*Please provide number of products")
     private Integer numberOfProducts;
 
     @Column(name = "status")
@@ -45,7 +46,7 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(Double targetPrice, String currency, Date expirationDate, Integer numberOfProducts, String status, Product product) {
+    public Auction(Integer targetPrice, String currency, Date expirationDate, Integer numberOfProducts, String status, Product product) {
         this.targetPrice = targetPrice;
         this.currency = currency;
         this.expirationDate = expirationDate;
@@ -62,11 +63,11 @@ public class Auction {
         this.id = id;
     }
 
-    public Double getTargetPrice() {
+    public Integer getTargetPrice() {
         return targetPrice;
     }
 
-    public void setTargetPrice(Double targetPrice) {
+    public void setTargetPrice(Integer targetPrice) {
         this.targetPrice = targetPrice;
     }
 
