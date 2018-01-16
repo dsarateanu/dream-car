@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Product</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div th:replace="home :: 'image'"></div>
+
+<div class="container margin-tb" style="width: 90%;">
+    <div th:fragment="edit">
+        <form th:action="@{/product/{id}(id=${isEdit}?${product.id}:'')}" method="post" th:object="${product}">
+            <fieldset>
+                <legend>Product</legend>
+                <div class="form-group" th:classappend="${#fields.hasErrors('name')}?'has-error'">
+                    <label for="name">Product name</label>
+                    <input type="text" class="form-control" th:field="*{name}"/>
+                    <span class="help-inline has-danger"
+                          th:if="${#fields.hasErrors('name')}"
+                          th:errors="*{name}"/>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" th:field="*{description}"/>
+                    <span class="help-inline has-danger"
+                          th:if="${#fields.hasErrors('description')}"
+                          th:errors="*{description}"/>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-secondary" type="reset">Reset</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

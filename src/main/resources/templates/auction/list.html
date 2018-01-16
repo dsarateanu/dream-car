@@ -6,38 +6,41 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Auction</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
-<body class="container">
-<div th:fragment="list-auction">
+<body>
+<div class="container margin-tb" th:fragment="list-auction">
     <h1 style="text-align: center;" class="margin-tb">Available Auctions</h1>
     <table class="table">
         <tr>
             <th>Nr.</th>
-            <th>Target Price</th>
-            <th>Currency</th>
-            <th>Expiration Date</th>
-            <th>Status</th>
             <th>Product Name</th>
+            <th>Target Price Per Product</th>
+            <th>Number of Products</th>
+            <th>Expiration Date</th>
+            <th>Currency</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         <tr th:each="auction: ${auctions}">
-            <td th:text="${auctionStat.index+1}+'.'">Desc</td>
-            <td th:text="${auction.targetPrice}">Desc</td>
-            <td th:text="${auction.currency}">Desc</td>
-            <td th:text="${auction.expirationDate}">Desc</td>
-            <td th:text="${auction.status}">Desc</td>
-            <td th:text="${auction.product.name}">Desc</td>
+            <td th:text="${auctionStat.index+1}+'.'">index</td>
+            <td th:text="${auction.product.name}">productName</td>
+            <td th:text="${auction.targetPricePerProduct}">targetPricePerProduct</td>
+            <td th:text="${auction.numberOfProducts}">numberOfProducts</td>
+            <td th:text="${auction.expirationDate}">expirationDate</td>
+            <td th:text="${auction.currency}">currency</td>
+            <td th:text="${auction.status}">status</td>
             <td>
                 <a role="button" class="btn btn-primary" type="button" th:href="@{/offer(auctionid=${auction.id})}">
                     Add Offer
                 </a>
 
-                <a class="btn btn-info" role="button" th:href="@{/auction/{id}(id=${auction.id})}">
+                <a role="button" class="btn btn-info" type="button" th:href="@{/auction/{id}(id=${auction.id})}">
                     Details
                 </a>
 
-                <a sec:authorize="hasAuthority('ADMIN')" role="button" class="btn btn-success" th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">
+                <a role="button" sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-success" th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">
                     Edit
                 </a>
 

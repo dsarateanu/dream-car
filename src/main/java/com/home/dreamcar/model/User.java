@@ -49,10 +49,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Offer> offers;
 
-    public User() {
-    }
-
-    public User(String name, String email, String password, String phoneNumber, int active, String role, Company company) {
+    public User(String name, String email, String password, String phoneNumber, int active, String role, Company company, Set<Offer> offers) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -60,6 +57,10 @@ public class User {
         this.active = active;
         this.role = role;
         this.company = company;
+        this.offers = offers;
+    }
+
+    public User() {
     }
 
     public Long getId() {
@@ -124,5 +125,13 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Set<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
     }
 }

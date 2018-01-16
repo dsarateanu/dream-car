@@ -25,6 +25,11 @@ public class AuctionServiceDefault implements AuctionService {
         return auctionRepository.findAll();
     }
 
+    @Override
+    public Iterable<Auction> findAllByStatus(String status) {
+        return auctionRepository.findByStatus(status);
+    }
+
     public void delete(Long id) {
         Auction auction = find(id);
         if (auction != null) {

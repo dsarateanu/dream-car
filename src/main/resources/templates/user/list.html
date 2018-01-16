@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div margin-tb th:replace="home :: 'image'"></div>
+
+<div class="container margin-tb">
+    <div style="text-align: right;margin-bottom: 1em;">
+        <form th:action="@{/home}" method="get">
+            <button class="btn btn-primary" type="Submit">Go To Home Page</button>
+        </form>
+    </div>
+
+    <h1>Validation/Invalidation User</h1>
+
+    <div style="text-align: right;margin-bottom: 1em;">
+        <a role="button" class="btn btn-primary" type="button" th:href="@{/registration}">
+            Register User
+        </a>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Nr.</th>
+            <th>User Name</th>
+            <th>User Email</th>
+            <th>User Phone Number</th>
+            <th>Company Name</th>
+            <th>Company Email</th>
+            <th>Company Phone Number</th>
+        </tr>
+        <tr th:each="user: ${users}">
+            <td th:text="${userStat.index+1}+'.'">Nr</td>
+            <td th:text="${user.name}">Price</td>
+            <td th:text="${user.email}">Price</td>
+            <td th:text="${user.phoneNumber}">Price</td>
+            <td th:text="${user.company.name}">Price</td>
+            <td th:text="${user.company.email}">Price
+            <td th:text="${user.company.phoneNumber}">Price</td>
+
+            <td>
+                <a role="button" th:if="${user.active == 0}" class="btn btn-success" th:href="@{/user/validate/{id}(id=${user.id})}">
+                    Validate
+                </a>
+                <a role="button" th:if="${user.active == 1}" class="btn btn-success" th:href="@{/user/invalidate/{id}(id=${user.id})}">
+                    Invalidate
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

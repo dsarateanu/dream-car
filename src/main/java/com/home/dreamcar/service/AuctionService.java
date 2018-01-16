@@ -10,5 +10,7 @@ public interface AuctionService {
 
     Iterable<Auction> findAll();
 
+    Iterable<Auction> findAllByStatus(String status);
+
     void delete(Long id);
 }

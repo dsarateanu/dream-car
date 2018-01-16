@@ -40,11 +40,12 @@ public class Company {
     public Company() {
     }
 
-    public Company(String name, String email, String phoneNumber, String address) {
+    public Company(String name, String email, String phoneNumber, String address, Set<User> users) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.users = users;
     }
 
     public Long getId() {

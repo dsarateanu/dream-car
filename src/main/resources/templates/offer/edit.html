@@ -6,12 +6,13 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Offer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
 
-<div class="container margin-tb panel-group panel panel-primary" style="width: 90%;">
+<div class="container margin-tb" style="width: 90%;">
     <h1 th:if="${isEdit}">Offer Edit Form</h1>
     <h1 th:unless="${isEdit}">Offer Add Form</h1>
 
@@ -23,7 +24,19 @@
                     Price Per Product
                 </label>
                 <input type="text" class="form-control" th:field="*{pricePerProduct}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('pricePerProduct')}" th:errors="*{pricePerProduct}"></span>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('pricePerProduct')}"
+                      th:errors="*{pricePerProduct}"/>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
+                <label for="description">
+                    Price Per Product
+                </label>
+                <input type="text" class="form-control" th:field="*{description}"/>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('description')}"
+                      th:errors="*{description}"/>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Save</button>

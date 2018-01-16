@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Product</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+<div th:replace="home :: 'image'"></div>
+
+<div class="container margin-tb">
+    <div class="margin-tb" style="text-align: right;margin-bottom: 1em;">
+        <form th:action="@{/home}" method="get">
+            <button class="btn btn-primary" type="Submit">Go To Home Page</button>
+        </form>
+    </div>
+
+    <h1>Products</h1>
+
+    <th:block th:if="${isEdit != null}">
+        <div th:replace="product/edit :: 'edit'"></div>
+    </th:block>
+
+    <div style="text-align: right;margin-bottom: 1em;">
+        <a role="button" class="btn btn-primary" type="button" th:href="@{/product/add}">
+            Add Product
+        </a>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Nr.</th>
+            <th>Product Name</th>
+            <th>Product Description</th>
+        </tr>
+        <tr th:each="product: ${products}">
+            <td th:text="${productStat.index+1}+'.'">Nr</td>
+            <td th:text="${product.name}">Price</td>
+            <td th:text="${product.description}">Price</td>
+
+            <td>
+                <a role="button" class="btn btn-success" th:href="@{/product/{id}(id=${product.id}, edit='true')}">
+                    Edit
+                </a>
+                <form th:action="@{/product/{id}/delete(id=${product.id})}" method="post" style="display: inline">
+                    <button class="btn btn-danger" type="submit">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

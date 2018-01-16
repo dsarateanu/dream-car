@@ -4,7 +4,7 @@
 
 <head>
 	<title>Dream Car</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/general.css}" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -14,10 +14,12 @@
 	<img th:src="@{/images/DreamCarWallpaper.jpg}" class="img-responsive center-block" alt="Logo" />
 
 	<form th:action="@{/registration}" method="get">
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
+		<button class="btn btn-md btn-warning btn-block" type="Submit">
+			Go To Registration Page
+		</button>
 	</form>
 	
-	<div class="container">
+	<div class="container margin-tb">
 		<form th:action="@{/login}" method="POST" class="form-signin" style="margin-top: 50px; margin-bottom: 50px;">
 
 			<h3 class="form-signin-heading" th:text="Welcome"></h3>

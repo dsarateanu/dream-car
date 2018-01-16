@@ -12,4 +12,7 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
     void delete(Long id);
 
     Auction findById(Long id);
+
+    Iterable<Auction> findByStatus(String status);
+
 }

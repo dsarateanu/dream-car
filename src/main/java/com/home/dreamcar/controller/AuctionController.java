@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 @Controller
-@RequestMapping("/auction/")
+@RequestMapping("/auction")
 public class AuctionController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class AuctionController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping(value = "{id}", params = "edit=true")
+    @GetMapping(value = "/{id}", params = "edit=true")
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("auction", auctionService.find(id));
         model.addAttribute("isEdit", true);
@@ -40,7 +40,7 @@ public class AuctionController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping()
+    @GetMapping
     public String addForm(Model model) {
         model.addAttribute("auction", new Auction());
         model.addAttribute("isEdit", false);

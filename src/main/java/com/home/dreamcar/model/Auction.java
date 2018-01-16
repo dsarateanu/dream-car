@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,14 +19,14 @@ public class Auction {
 
     @Column(name = "target_price")
     @NotNull(message = "*Please provide target price")
-    private Integer targetPrice;
+    private Double targetPricePerProduct;
 
     @Column(name = "currency")
-    @NotEmpty(message = "*Please provide currency")
+    @NotNull(message = "*Please provide currency")
     private String currency;
 
     @Column(name = "expiration_date")
-    @NotEmpty(message = "*Please provide expirationDate")
+    @NotNull(message = "*Please provide expirationDate")
     private Date expirationDate;
 
     @Column(name = "number_of_products")
@@ -33,26 +34,27 @@ public class Auction {
     private Integer numberOfProducts;
 
     @Column(name = "status")
-    @NotEmpty(message = "*Please provide status")
+    @NotNull(message = "*Please provide status")
     private String status;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
-    private Set<Offer> offers;
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Offer> offers;
 
     public Auction() {
     }
 
-    public Auction(Integer targetPrice, String currency, Date expirationDate, Integer numberOfProducts, String status, Product product) {
-        this.targetPrice = targetPrice;
+    public Auction(Double targetPricePerProduct, String currency, Date expirationDate, Integer numberOfProducts, String status, Product product, List<Offer> offers) {
+        this.targetPricePerProduct = targetPricePerProduct;
         this.currency = currency;
         this.expirationDate = expirationDate;
         this.numberOfProducts = numberOfProducts;
         this.status = status;
         this.product = product;
+        this.offers = offers;
     }
 
     public Long getId() {
@@ -63,12 +65,12 @@ public class Auction {
         this.id = id;
     }
 
-    public Integer getTargetPrice() {
-        return targetPrice;
+    public Double getTargetPricePerProduct() {
+        return targetPricePerProduct;
     }
 
-    public void setTargetPrice(Integer targetPrice) {
-        this.targetPrice = targetPrice;
+    public void setTargetPricePerProduct(Double targetPricePerProduct) {
+        this.targetPricePerProduct = targetPricePerProduct;
     }
 
     public String getCurrency() {
@@ -111,11 +113,11 @@ public class Auction {
         this.product = product;
     }
 
-    public Set<Offer> getOffers() {
+    public List<Offer> getOffers() {
         return offers;
     }
 
-    public void setOffers(Set<Offer> offers) {
+    public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
 }

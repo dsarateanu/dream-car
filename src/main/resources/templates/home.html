@@ -4,8 +4,8 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Admin Page</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <title>Dream Car</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -16,34 +16,50 @@
     <img th:src="@{/images/DreamCarWallpaper.jpg}" class="img-responsive center-block" alt="Logo"/>
 </div>
 
-<div class="container margin-tb panel-group panel panel-primary" style="width: 90%;">
+<div class="container margin-tb" style="width: 90%;">
     <div class="panel-heading">
-        <span th:utext="${userName}"></span>
+        <h3 th:utext="${userName}"></h3>
     </div>
     <div class="column">
         <form th:action="@{/logout}" method="get">
-            <button class="btn btn-md btn-danger btn-block" name="registration" type="Submit">Logout</button>
+            <button class="btn btn-md btn-danger btn-block" type="Submit">
+                Logout
+            </button>
         </form>
     </div>
 
     <div class="column" sec:authorize="hasAuthority('ADMIN')">
         <form th:action="@{/registration}" method="get">
-            <button class="btn btn-md btn-danger btn-block" name="registration" type="Submit">Create User</button>
+            <button class="btn btn-md btn-danger btn-block" type="Submit">
+                Create User
+            </button>
         </form>
     </div>
 
     <div class="column" sec:authorize="hasAuthority('ADMIN')">
         <form th:action="@{/auction}" method="get">
-            <button class="btn btn-md btn-danger btn-block" name="registration" type="Submit">Add Auction</button>
-        </form>
-    </div>
-    <div class="column" sec:authorize="hasAuthority('ADMIN')">
-        <form th:action="@{/product}" method="get">
-            <button class="btn btn-md btn-danger btn-block" name="registration" type="Submit">Add Product</button>
+            <button class="btn btn-md btn-danger btn-block" type="Submit">
+                Add Auction
+            </button>
         </form>
     </div>
 
-    <div margin-tb th:replace="auction/list :: 'list-auction'"></div>
+    <div class="column" sec:authorize="hasAuthority('ADMIN')">
+        <form th:action="@{/product}" method="get">
+            <button class="btn btn-md btn-danger btn-block" type="Submit">
+                Products
+            </button>
+        </form>
+    </div>
+    <div class="column" sec:authorize="hasAuthority('ADMIN')">
+        <form th:action="@{/user}" method="get">
+            <button class="btn btn-md btn-danger btn-block" type="Submit">
+                Validate/Invalidate Users
+            </button>
+        </form>
+    </div>
+
+    <div th:replace="auction/list :: 'list-auction'"></div>
 </div>
 </body>
 </html>

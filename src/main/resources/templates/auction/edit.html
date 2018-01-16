@@ -5,47 +5,93 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Auction</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
 
-<div class="container margin-tb panel-group panel panel-primary" style="width: 90%;">
-    <h1 th:if="${isEdit}">Auction Edit Form</h1>
-    <h1 th:unless="${isEdit}">Auction Add Form</h1>
+<div class="container margin-tb" style="width: 90%;">
+    <div class="margin-tb" style="text-align: right;margin-bottom: 1em;">
+        <form th:action="@{/home}" method="get">
+            <button class="btn btn-primary" type="Submit">Go To Home Page</button>
+        </form>
+    </div>
+
+    <h2 th:if="${isEdit}">Auction Edit Form</h2>
+    <h3 th:unless="${isEdit}">Auction Add Form</h3>
 
     <form th:action="@{/auction/{id}(id=${isEdit}?${auction.id}:'')}" method="post" th:object="${auction}">
         <fieldset>
             <legend>Auction</legend>
-            <div class="form-group" th:classappend="${#fields.hasErrors('targetPrice')}?'has-error'">
-                <label>Target Price</label>
-                <input type="text" class="form-control" th:field="*{targetPrice}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('targetPrice')}"
-                      th:errors="*{targetPrice}">Target Price</span>
-            </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('currency')}?'has-error'">
-                <label>Currency</label>
-                <input type="text" class="form-control" th:field="*{currency}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}">Currency</span>
-            </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('expirationDate')}?'has-error'">
-                <label>Expiration Date</label>
-                <input type="text" class="form-control" th:field="*{expirationDate}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('expirationDate')}"
-                      th:errors="*{expirationDate}">Expiration Date</span>
-            </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('status')}?'has-error'">
-                <label>Status</label>
-                <input type="text" class="form-control" th:field="*{status}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('status')}"
-                      th:errors="*{status}">Status</span>
-            </div>
+
+            <!-- Product Name -->
             <div class="form-group" th:classappend="${#fields.hasErrors('product.name')}?'has-error'">
-                <label>Product Name</label>
+                <label>
+                    Product Name
+                </label>
                 <input type="text" class="form-control" th:field="*{product.name}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('product.name')}"
-                      th:errors="*{product.name}">Product Name</span>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('product.name')}" th:errors="*{product.name}">
+                    Product Name
+                </span>
             </div>
+
+            <!-- Target Price Per Product -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('targetPricePerProduct')}?'has-error'">
+                <label>
+                    Target Price Per Product
+                </label>
+                <input type="text" class="form-control" th:field="*{targetPricePerProduct}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('targetPricePerProduct')}" th:errors="*{targetPricePerProduct}">
+                    Target Price Per Product
+                </span>
+            </div>
+
+            <!-- Number Of Products -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('numberOfProducts')}?'has-error'">
+                <label>
+                    Number Of Products
+                </label>
+                <input type="text" class="form-control" th:field="*{numberOfProducts}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">
+                    Number Of Products
+                </span>
+            </div>
+
+            <!-- Expiration Date -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('expirationDate')}?'has-error'">
+                <label>
+                    Expiration Date
+                </label>
+                <input type="text" class="form-control" th:field="${#dates.formatISO(*{expirationDate})}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}">
+                    Expiration Date
+                </span>
+            </div>
+
+            <!-- Currency -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('currency')}?'has-error'">
+                <label>
+                    Currency
+                </label>
+                <input type="text" class="form-control" th:field="*{currency}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}">
+                    Currency
+                </span>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('status')}?'has-error'">
+                <label>
+                    Status
+                </label>
+                <input type="text" class="form-control" th:field="*{status}"/>
+                <span class="help-inline has-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">
+                    Status
+                </span>
+            </div>
+
+
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Save</button>
                 <button class="btn btn-secondary" type="reset">Reset</button>

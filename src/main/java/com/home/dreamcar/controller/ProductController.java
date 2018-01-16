@@ -11,67 +11,70 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/product/")
+@PreAuthorize("hasAuthority('ADMIN')")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     ProductService productService;
 
-    @GetMapping("{id}")
-    public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.find(id));
-        return "product/details";
+    @GetMapping
+    public ModelAndView productList() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("products", productService.findAll());
+        modelAndView.addObject("isEdit", null);
+        modelAndView.addObject("product", new Product());
+        modelAndView.setViewName("product/list");
+        return modelAndView;
     }
 
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "{id}", params = "edit=true")
-    public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.find(id));
-        model.addAttribute("isEdit", true);
-        return "product/edit";
+    @GetMapping(value = "/{id}", params = "edit=true")
+    public ModelAndView editForm(@PathVariable Long id, ModelAndView modelAndView) {
+        modelAndView.addObject("products", productService.findAll());
+        modelAndView.addObject("product", productService.find(id));
+        modelAndView.addObject("isEdit", true);
+        modelAndView.setViewName("product/list");
+        return modelAndView;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping()
-    public String addForm(Model model) {
-        model.addAttribute("product", new Product());
-        model.addAttribute("isEdit", false);
-        return "admin/edit-product";
+    @GetMapping("/add")
+    public ModelAndView addForm(ModelAndView modelAndView) {
+        modelAndView.addObject("products", productService.findAll());
+        modelAndView.addObject("product", new Product());
+        modelAndView.addObject("isEdit", false);
+        modelAndView.setViewName("product/list");
+        return modelAndView;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public String saveproduct(@PathVariable Long id, @Valid Product product, BindingResult bindingResult, Model model) {
         product.setId(id);
         if (bindingResult.hasErrors()) {
             model.addAttribute("isEdit", true);
-            return "product/edit";
+            return "product/list";
         }
         productService.saveOrUpdateProduct(product);
-        return "redirect:/home";
+        return "redirect:/product";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public String addproduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("isEdit", false);
-            return "product/edit";
+            return "product/list";
         }
         productService.saveOrUpdateProduct(product);
-        return "redirect:/home";
+        return "redirect:/product";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("{id}/delete")
+    @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
-        return "redirect:/home";
+        return "redirect:/product";
     }
-
 }

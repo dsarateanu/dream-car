@@ -15,6 +15,8 @@ public class UserServiceDefault implements UserService {
     @Autowired
     private CompanyService companyService;
     @Autowired
+    EmailService emailService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -23,28 +25,44 @@ public class UserServiceDefault implements UserService {
     }
 
     @Override
+    public User findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User saveAdminUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        user.setRole("ADMIN");
-        user.setCompany(companyService.findCompanyByEmail("dream.car@dreamcar.com"));
+        user.setCompany(companyService.findCompanyByEmail("dreamcar@dreamcar.com"));
+        emailService.sendMailToActivatedUser(user.getEmail());
         return userRepository.save(user);
     }
 
     @Override
-    public User saveUser(User user) {
+    public User saveUser(User user, boolean active) {
         Company companyExists = companyService.findCompanyByEmail(user.getCompany().getEmail());
         if (companyExists == null) {
             companyService.saveCompany(user.getCompany());
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(0);
+        if(active == true){
+            user.setActive(1);
+            emailService.sendMailToActivatedUser(user.getEmail());
+        } else {
+            user.setActive(0);
+            emailService.sendMailToUnactivatedUser(user.getEmail());
+        }
+        return userRepository.save(user);
+    }
+
+
+    @Override
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User approveUser(User user) {
-        user.setActive(0);
-        return userRepository.save(user);
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
     }
 }

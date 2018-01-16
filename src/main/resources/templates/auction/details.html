@@ -6,57 +6,76 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Auction</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
 
-<div class="container margin-tb panel-group panel panel-primary" style="width: 90%;">
+<div class="container margin-tb" style="width: 90%;">
     <h1 style="text-align: center;" class="margin-tb">Auction Details</h1>
-    <fieldset style="text-align: center;">
-        <div style="width: 100%">
-            <label>TargetPrice</label>
-            <label th:text="${auction.targetPrice}">TargetPrice</label>
-        </div>
-        <div style="width: 100%">
-            <label>Currency</label>
-            <label th:text="${auction.currency}">Currency</label>
-        </div>
-        <div style="width: 100%">
-            <label>ExpirationDate</label>
-            <label th:text="${auction.expirationDate}">ExpirationDate</label>
-        </div>
-        <div style="width: 100%">
-            <label>Status</label>
-            <label th:text="${auction.status}">Status</label>
-        </div>
-        <div style="width: 100%">
-            <label>Product</label>
-            <label th:text="${auction.product.name}">Product</label>
-        </div>
-        <div style="width: 100%">
-            <label>Product details</label>
-            <label th:text="${auction.product.description}">Product</label>
-        </div>
-        
-        <div style="text-align: center" class="margin-tb">
-            <a role="button" class="btn btn-primary" th:href="@{/home}">
-                Back to the List
-            </a>
 
-            <a sec:authorize="hasAuthority('ADMIN')" role="button" class="btn btn-success"
-               th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">
-                Edit
-            </a>
-            
-            <form sec:authorize="hasAuthority('ADMIN')" style="display: inline"
-                  th:action="@{/auction/{id}/delete(id=${auction.id})}" method="post">
-                <button class="btn btn-danger" type="submit">
-                    Delete
-                </button>
-            </form>
-        </div>
-    </fieldset>
+    <table class="table table-bordered">
+        <tr>
+            <td>Product Name</td>
+            <td th:text="${auction.product.name}"></td>
+        </tr>
+
+        <tr>
+            <td>Target Price Per Product</td>
+            <td th:text="${auction.targetPricePerProduct}"></td>
+        </tr>
+
+        <tr>
+            <td>Number Of Products</td>
+            <td th:text="${auction.numberOfProducts}"></td>
+        </tr>
+
+        <tr>
+            <td>Expiration Date</td>
+            <td th:text="${auction.expirationDate}">ExpirationDate</td>
+        </tr>
+
+        <tr>
+            <td>Currency</td>
+            <td th:text="${auction.currency}">Currency</td>
+        </tr>
+
+        <tr>
+            <td>ExpirationDate</td>
+            <td th:text="${auction.expirationDate}">ExpirationDate</td>
+        </tr>
+
+        <tr>
+            <td>Status</td>
+            <td th:text="${auction.status}">Status</td>
+        </tr>
+
+        <tr>
+            <td>Product details</td>
+            <td th:text="${auction.product.description}">Product</td>
+        </tr>
+
+        <tr>
+            <td>
+                <a role="button" class="btn btn-primary" th:href="@{/home}">
+                    Back to the List
+                </a>
+            </td>
+            <td>
+                <a sec:authorize="hasAuthority('ADMIN')" role="button" class="btn btn-success"
+                   th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">
+                    Edit
+                </a>
+                <form sec:authorize="hasAuthority('ADMIN')" style="display: inline"
+                      th:action="@{/auction/{id}/delete(id=${auction.id})}" method="post">
+                    <button class="btn btn-danger" type="submit">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
 
     <div margin-tb th:replace="offer/list :: 'list-offer'"></div>
 </div>
