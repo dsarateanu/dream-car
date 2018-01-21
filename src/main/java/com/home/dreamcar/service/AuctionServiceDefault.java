@@ -2,7 +2,9 @@ package com.home.dreamcar.service;
 
 import com.home.dreamcar.exception.ErrorAdvice;
 import com.home.dreamcar.model.Auction;
+import com.home.dreamcar.model.Product;
 import com.home.dreamcar.repository.AuctionRepository;
+import com.home.dreamcar.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,12 @@ public class AuctionServiceDefault implements AuctionService {
 
     @Autowired
     private AuctionRepository auctionRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public Auction saveOrUpdateAuction(Auction auction) {
+        Product product = productRepository.findByName(auction.getProduct().getName());
+        auction.setProduct(product);
         return auctionRepository.save(auction);
     }
 
@@ -37,7 +43,6 @@ public class AuctionServiceDefault implements AuctionService {
         } else {
             throw new ErrorAdvice.NotModifiedDataAccessException("Auction already gone");
         }
-
     }
 
 }

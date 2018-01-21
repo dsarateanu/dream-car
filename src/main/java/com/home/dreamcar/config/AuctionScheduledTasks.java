@@ -31,7 +31,7 @@ public class AuctionScheduledTasks {
     //@Scheduled(cron ="0 0 0 * * * *")
     @Scheduled(cron = "0 */2 * * * *")
     public void checkAuction() {
-        log.info("check auction");
+        log.info("Check auction");
         Iterable<Auction> auctions = auctionService.findAll();
         if (auctions != null) {
             Date date = new Date();

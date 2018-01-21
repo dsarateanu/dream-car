@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>Offer</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container margin-tb" th:fragment="list-offer">
@@ -23,17 +24,19 @@
             <th>Nr.</th>
             <th>Price per product</th>
             <th>Offer Description</th>
+            <th>Status</th>
             <th>User Name</th>
             <th>Email</th>
             <th>Company</th>
         </tr>
         <tr th:each="offer: ${offers}">
-            <td th:text="${offerStat.index+1}+'.'">Nr</td>
-            <td th:text="${offer.pricePerProduct}">Price</td>
-            <td th:text="${offer.description}">Price</td>
-            <td th:text="${offer.user.name}">User name</td>
-            <td th:text="${offer.user.email}">User name</td>
-            <td th:text="${offer.user.company.name}">Company</td>
+            <td th:text="${offerStat.index+1}+'.'"/>
+            <td th:text="${offer.pricePerProduct}"/>
+            <td th:text="${offer.description}"/>
+            <td th:text="${offer.status}"/>
+            <td th:text="${offer.user.name}"/>
+            <td th:text="${offer.user.email}"/>
+            <td th:text="${offer.user.company.name}"/>
 
             <td th:if="${offer.user.email == #authentication.name || #authorization.expression('hasAuthority(''ADMIN'')')}">
                 <!--<a class="btn btn-info" role="button" th:href="@{/offer/{id}(id=${offer.id})}">Details</a>-->
@@ -51,7 +54,5 @@
         </tr>
     </table>
 </div>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

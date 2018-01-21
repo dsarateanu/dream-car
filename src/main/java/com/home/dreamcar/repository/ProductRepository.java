@@ -12,4 +12,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     void delete(Long id);
 
     Product findById(Long id);
+
+    Product findByName(String name);
 }

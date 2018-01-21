@@ -17,6 +17,7 @@ public class EmailServiceDefault implements EmailService{
     public void sendMailToWinnerOfAuction(String to, Long auctionId, Product product) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("sarateanu.daniel@yahoo.com");
+        //message.setTo(to);
         message.setSubject(DREAM_CAR +" Auction");
         message.setText("Congratilations!\n\n" +
                 "You won the auction number" + auctionId + "for product" + product.getName() +".\n " +
@@ -30,6 +31,7 @@ public class EmailServiceDefault implements EmailService{
     public void sendMailToActivatedUser(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("sarateanu.daniel@yahoo.com");
+        //message.setTo(to);
         message.setSubject(DREAM_CAR + " Account");
         message.setText("Congratilations!\n\n" +
                         "Your Dream Car account is active.\n\n" +
@@ -42,6 +44,7 @@ public class EmailServiceDefault implements EmailService{
     public void sendMailToUnactivatedUser(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("sarateanu.daniel@yahoo.com");
+        //message.setTo(to);
         message.setSubject(DREAM_CAR + " Account");
         message.setText("Congratilations!\n\n" +
                 "Your Dream Car account is created.\n\n" +

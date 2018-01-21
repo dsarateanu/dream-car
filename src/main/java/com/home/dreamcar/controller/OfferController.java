@@ -2,6 +2,7 @@ package com.home.dreamcar.controller;
 
 import com.home.dreamcar.model.Auction;
 import com.home.dreamcar.model.Offer;
+import com.home.dreamcar.model.Status;
 import com.home.dreamcar.model.User;
 import com.home.dreamcar.service.AuctionService;
 import com.home.dreamcar.service.OfferService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/offer")
@@ -33,6 +36,8 @@ public class OfferController {
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("offer", offerService.find(id));
         model.addAttribute("isEdit", true);
+        List<String> statuses = Arrays.asList(Status.LOST.toString(), Status.WON.toString(), Status.PENDING.toString());
+        model.addAttribute("statuses", statuses);
         return "offer/edit";
     }
 
@@ -41,6 +46,8 @@ public class OfferController {
         model.addAttribute("auctionid", auctionid);
         model.addAttribute("offer", new Offer());
         model.addAttribute("isEdit", false);
+        List<String> statuses = Arrays.asList(Status.LOST.toString(), Status.WON.toString(), Status.PENDING.toString());
+        model.addAttribute("statuses", statuses);
         return "offer/edit";
     }
 

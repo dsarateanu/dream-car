@@ -1,12 +1,11 @@
 package com.home.dreamcar.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "auction")
@@ -27,6 +26,7 @@ public class Auction {
 
     @Column(name = "expiration_date")
     @NotNull(message = "*Please provide expirationDate")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date expirationDate;
 
     @Column(name = "number_of_products")

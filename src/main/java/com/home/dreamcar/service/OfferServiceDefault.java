@@ -21,6 +21,7 @@ public class OfferServiceDefault implements OfferService {
     private EmailService emailService;
 
     public Offer saveOrUpdateOffer(Offer offer) {
+        offer.setStatus(Status.PENDING.toString());
         Offer offerSaved = offerRepository.save(offer);
         Auction auction = auctionService.find(offerSaved.getAuction().getId());
         if (auction.getTargetPricePerProduct() <= offerSaved.getPricePerProduct()) {
@@ -28,11 +29,11 @@ public class OfferServiceDefault implements OfferService {
             if (offers.size() != 1) {
                 for (Offer offer1 : offers) {
                     offer1.setStatus(Status.LOST.toString());
-                    saveOrUpdateOffer(offer1);
+                    offerRepository.save(offer);
                 }
             }
             offerSaved.setStatus(Status.WON.toString());
-            saveOrUpdateOffer(offerSaved);
+            offerRepository.save(offer);
             auction.setStatus(Status.CLOSED.toString());
             auctionService.saveOrUpdateAuction(auction);
             emailService.sendMailToWinnerOfAuction(offerSaved.getUser().getEmail(), auction.getId(), auction.getProduct());

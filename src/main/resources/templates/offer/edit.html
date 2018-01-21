@@ -7,12 +7,20 @@
     <meta charset="UTF-8"/>
     <title>Offer</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
 
 <div class="container margin-tb" style="width: 90%;">
+    <div class="margin-tb" style="text-align: right;margin-bottom: 1em;">
+        <form th:action="@{/home}" method="get">
+            <button class="btn btn-primary" type="Submit">Go To Home Page</button>
+        </form>
+    </div>
+
     <h1 th:if="${isEdit}">Offer Edit Form</h1>
     <h1 th:unless="${isEdit}">Offer Add Form</h1>
 
@@ -29,14 +37,29 @@
                       th:errors="*{pricePerProduct}"/>
             </div>
 
+            <!-- Description -->
             <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
                 <label for="description">
-                    Price Per Product
+                    Description
                 </label>
                 <input type="text" class="form-control" th:field="*{description}"/>
                 <span class="help-inline has-danger"
                       th:if="${#fields.hasErrors('description')}"
                       th:errors="*{description}"/>
+            </div>
+
+            <div class="form-group" sec:authorize="hasAuthority('ADMIN')" th:classappend="${#fields.hasErrors('status')}?'has-error'">
+                <label for="status">
+                    Status
+                </label>
+                <select class="form-control" th:field="*{status}">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status}"
+                            th:text="${status}"/>
+                </select>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('status')}"
+                      th:errors="*{status}"/>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit">Save</button>
@@ -45,7 +68,5 @@
         </fieldset>
     </form>
 </div>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -5,8 +5,16 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Auction</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
@@ -19,7 +27,7 @@
     </div>
 
     <h2 th:if="${isEdit}">Auction Edit Form</h2>
-    <h3 th:unless="${isEdit}">Auction Add Form</h3>
+    <h2 th:unless="${isEdit}">Auction Add Form</h2>
 
     <form th:action="@{/auction/{id}(id=${isEdit}?${auction.id}:'')}" method="post" th:object="${auction}">
         <fieldset>
@@ -30,10 +38,14 @@
                 <label>
                     Product Name
                 </label>
-                <input type="text" class="form-control" th:field="*{product.name}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('product.name')}" th:errors="*{product.name}">
-                    Product Name
-                </span>
+                <select class="form-control" th:field="*{product.name}">
+                    <option th:each="product : ${products}"
+                            th:value="${product.name}"
+                            th:text="${product.name}"/>
+                </select>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('product.name')}"
+                      th:errors="*{product.name}"/>
             </div>
 
             <!-- Target Price Per Product -->
@@ -42,9 +54,9 @@
                     Target Price Per Product
                 </label>
                 <input type="text" class="form-control" th:field="*{targetPricePerProduct}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('targetPricePerProduct')}" th:errors="*{targetPricePerProduct}">
-                    Target Price Per Product
-                </span>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('targetPricePerProduct')}"
+                      th:errors="*{targetPricePerProduct}"/>
             </div>
 
             <!-- Number Of Products -->
@@ -53,9 +65,9 @@
                     Number Of Products
                 </label>
                 <input type="text" class="form-control" th:field="*{numberOfProducts}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('numberOfProducts')}" th:errors="*{numberOfProducts}">
-                    Number Of Products
-                </span>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('numberOfProducts')}"
+                      th:errors="*{numberOfProducts}"/>
             </div>
 
             <!-- Expiration Date -->
@@ -63,10 +75,19 @@
                 <label>
                     Expiration Date
                 </label>
-                <input type="text" class="form-control" th:field="${#dates.formatISO(*{expirationDate})}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}">
-                    Expiration Date
-                </span>
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class='input-group date' id='datetimepicker'>
+                            <input type='text' class="form-control" th:field="*{expirationDate}"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('expirationDate')}"
+                      th:errors="*{expirationDate}"/>
             </div>
 
             <!-- Currency -->
@@ -74,10 +95,14 @@
                 <label>
                     Currency
                 </label>
-                <input type="text" class="form-control" th:field="*{currency}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}">
-                    Currency
-                </span>
+                <select class="form-control" th:field="*{currency}">
+                    <option th:each="currency : ${currencies}"
+                            th:value="${currency}"
+                            th:text="${currency}"/>
+                </select>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('currency')}"
+                      th:errors="*{currency}"/>
             </div>
 
             <!-- Status -->
@@ -85,10 +110,14 @@
                 <label>
                     Status
                 </label>
-                <input type="text" class="form-control" th:field="*{status}"/>
-                <span class="help-inline has-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">
-                    Status
-                </span>
+                <select class="form-control" th:field="*{status}">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status}"
+                            th:text="${status}"/>
+                </select>
+                <span class="help-inline has-danger"
+                      th:if="${#fields.hasErrors('status')}"
+                      th:errors="*{status}"/>
             </div>
 
 
@@ -99,7 +128,12 @@
         </fieldset>
     </form>
 </div>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+    });
+</script>
 </body>
 </html>

@@ -7,12 +7,20 @@
     <meta charset="UTF-8"/>
     <title>Auction</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div margin-tb th:replace="home :: 'image'"></div>
 
 <div class="container margin-tb" style="width: 90%;">
+    <div class="margin-tb" style="text-align: right;margin-bottom: 1em;">
+        <form th:action="@{/home}" method="get">
+            <button class="btn btn-primary" type="Submit">Go To Home Page</button>
+        </form>
+    </div>
+
     <h1 style="text-align: center;" class="margin-tb">Auction Details</h1>
 
     <table class="table table-bordered">
@@ -21,7 +29,7 @@
             <td th:text="${auction.product.name}"></td>
         </tr>
 
-        <tr>
+        <tr sec:authorize="hasAuthority('ADMIN')">
             <td>Target Price Per Product</td>
             <td th:text="${auction.targetPricePerProduct}"></td>
         </tr>
@@ -42,11 +50,6 @@
         </tr>
 
         <tr>
-            <td>ExpirationDate</td>
-            <td th:text="${auction.expirationDate}">ExpirationDate</td>
-        </tr>
-
-        <tr>
             <td>Status</td>
             <td th:text="${auction.status}">Status</td>
         </tr>
@@ -56,18 +59,15 @@
             <td th:text="${auction.product.description}">Product</td>
         </tr>
 
-        <tr>
+        <tr sec:authorize="hasAuthority('ADMIN')">
             <td>
-                <a role="button" class="btn btn-primary" th:href="@{/home}">
-                    Back to the List
-                </a>
-            </td>
-            <td>
-                <a sec:authorize="hasAuthority('ADMIN')" role="button" class="btn btn-success"
+                <a role="button" class="btn btn-success"
                    th:href="@{/auction/{id}(id=${auction.id}, edit='true')}">
                     Edit
                 </a>
-                <form sec:authorize="hasAuthority('ADMIN')" style="display: inline"
+            </td>
+            <td>
+                <form style="display: inline"
                       th:action="@{/auction/{id}/delete(id=${auction.id})}" method="post">
                     <button class="btn btn-danger" type="submit">
                         Delete
@@ -79,8 +79,5 @@
 
     <div margin-tb th:replace="offer/list :: 'list-offer'"></div>
 </div>
-
-<script src="/webjars/jquery/jquery.min.js"></script>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

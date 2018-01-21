@@ -47,7 +47,7 @@
     <div class="column" sec:authorize="hasAuthority('ADMIN')">
         <form th:action="@{/product}" method="get">
             <button class="btn btn-md btn-danger btn-block" type="Submit">
-                Products
+                 Product
             </button>
         </form>
     </div>
@@ -59,7 +59,7 @@
         </form>
     </div>
 
-    <div th:replace="auction/list :: 'list-auction'"></div>
+    <div margin-tb th:replace="auction/list :: 'list-auction'"></div>
 </div>
 </body>
 </html>
